@@ -27,8 +27,8 @@ const fs = require('fs');
 const parseJSON = require('./helpers.js');
 const config = require('./config.js')();
 
-
-const url = config.firebase.url + 'students/.json'
+var baseUrL = config.firebase.url || process.env.FIREBASE_URL;
+const url = baseUrl + 'students/.json'
 
 
 function getDataAndParse() {
