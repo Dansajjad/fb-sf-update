@@ -1,7 +1,7 @@
 var express = require('express');
 var app = express();
 
-app.set('port', (process.env.PORT || 5000));
+app.set('port', (process.env.PORT || 3000));
 
 app.use(express.static(__dirname + '/public'));
 
@@ -27,7 +27,7 @@ const fs = require('fs');
 const parseJSON = require('./helpers.js');
 const config = require('./config.js')();
 
-var baseUrL = config.firebase.url || process.env.FIREBASE_URL;
+let baseUrl = config.firebase.url || process.env.FIREBASE_URL;
 const url = baseUrl + 'students/.json'
 
 
