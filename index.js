@@ -25,11 +25,14 @@ const http = require('http');
 const request = require("request");
 const fs = require('fs');
 const parseJSON = require('./helpers.js');
+
+var baseUrl;
 if(process.env.NODE_ENV !== 'PROD') {
   const config = require('./config.js')();
+  baseUrl = config.firebase.url; 
 }
 
-var baseUrl = config.firebase.url || process.env.FIREBASE_URL;
+baseUrl = process.env.FIREBASE_URL;
 const url = baseUrl + 'students/.json'
 
 
