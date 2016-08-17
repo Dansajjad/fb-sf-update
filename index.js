@@ -18,3 +18,38 @@ app.listen(app.get('port'), function() {
 });
 
 
+
+
+//----------------Connect with (dev environment)
+const http = require('http');
+const request = require("request");
+const fs = require('fs');
+const parseJSON = require('./helpers.js');
+const config = require('./config.js')();
+
+
+const url = config.firebase.url + 'students/.json'
+
+
+function getDataAndParse() {
+  var stream = request(url).pipe(fs.createWriteStream('./studentsRaw.json'));
+  stream.on('finish', function () {
+    parseJSON(function(data) {
+      fs.writeFile('./studentsParsed.json', data, function(err) {
+        if(err) console.log(err);
+        else console.log('>>>>>>>>>>Write complete')
+      });
+    });
+  });
+}
+
+
+(function () {
+  let calledTimes = 0;
+  setInterval(function () {
+    getDataAndParse();
+    calledTimes++;
+    console.log(`\n The function has been called ${calledTimes} times.`)
+  }, 5000);
+})(); 
+

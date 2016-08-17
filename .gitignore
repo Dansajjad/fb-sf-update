@@ -10,3 +10,10 @@ npm-debug.log
 # Docker
 Dockerfile
 docker-compose.yml
+
+
+# Others
+studentsRaw.json
+studentsParsed.json
+notes.txt
+config.js

@@ -1,7 +1,7 @@
 {
-  "name": "node-js-getting-started",
+  "name": "Test-fb-sf",
   "version": "0.2.5",
-  "description": "A sample Node.js app using Express 4",
+  "description": "Test App",
   "engines": {
     "node": "5.9.1"
   },
@@ -11,11 +11,12 @@
   },
   "dependencies": {
     "ejs": "2.4.1",
-    "express": "4.13.3"
+    "express": "4.13.3",
+    "request": "^2.74.0"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/heroku/node-js-getting-started"
+    "url": "https://github.com/Broadstrokes/node-js-getting-started.git"
   },
   "keywords": [
     "node",
