@@ -3,7 +3,7 @@
   "version": "0.2.5",
   "description": "Test App",
   "engines": {
-    "node": "5.9.1"
+    "node": "^6.1.0"
   },
   "main": "index.js",
   "scripts": {
