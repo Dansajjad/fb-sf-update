@@ -17,3 +17,4 @@ studentsRaw.json
 studentsParsed.json
 notes.txt
 config.js
+.env
