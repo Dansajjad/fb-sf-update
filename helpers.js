@@ -1,7 +1,3 @@
-
-
-//function to parse out end date
-
 /* 
 Structure of data under the students node that have to be targeted
 <unique Github id>
@@ -18,13 +14,14 @@ Structure of data under the students node that have to be targeted
     contactId  
 */
 
+//Parse the raw json file and return new object with only the selected key/values
 function parseJSON(cb) {
   const students = require('./studentsRaw.json');
 
-  let parsedData = {};
-  let studentCount = 0;
+  let parsedData = {}; //this holds the selected key/value pairs
+  let studentCount = 0; //keeps count of students parsed
 
-  for(var githubID in students) {
+  for(var githubID in students) {//loop over all the raw student objects
     const student = students[githubID];
 
     let 
@@ -50,7 +47,7 @@ function parseJSON(cb) {
     }
 
     
-    parsedData[githubID] = {
+    parsedData[githubID] = {// add new student object to parsedData
       startDate: startDate,
       endDate: endDate,
       progress: progress,
@@ -66,7 +63,7 @@ function parseJSON(cb) {
   console.log(`\n\nParse process is complete for ${studentCount} of students.\nFields retrieved: startDate, endDate, progress, accountId, contactId.`
   );
 
-  cb(JSON.stringify(parsedData));
+  cb(JSON.stringify(parsedData)); //Do whatever needed to the data 
 
 };//parseJSON
 
