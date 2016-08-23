@@ -68,6 +68,7 @@ var Student = commonSalesforce.Student;
 // var SFConnect = require('./salesforceConnect');
 // var salesforce = require('./salesforce');
 var Promise = require('bluebird');
+var async = require('async');
 
 var sfCred = require('./config.js')().salesforce;
 // var connection;
@@ -114,11 +115,12 @@ var studentProperties2 = {
 // };
 
 var testStudents = {
-  "4lynx":{"FirstName":"Ivan","LastName":"O'Neill","GitHub__c":"4lynx","Email":"ipoguard-github@yahoo.com","Fulcrum_Start_Date__c":"2015-12-16","Fulcrum_End_Date__c":"2016-07-16","Fulcrum_Student_Progress__c":"Sprint - Underbar Part 1","accountId":"0011a00000IAZb0AAH","Id":"003R0000017XHp4IAG"},
+  "4lynx":{"FirstName":"Ivan","LastName":"O'Neill","GitHub__c":"4lynx","Email":"ipoguard-github@yahoo.com","Fulcrum_Start_Date__c":"2015-12-16","Fulcrum_End_Date__c":"2016-03-16","Fulcrum_Student_Progress__c":"Module 6 - Object Oriented Patterns","accountId":"0011a00000IAZb0AAH","Id":"003R0000017XHp4IAG"},
   "a-faraz":{"FirstName":"Anjum","LastName":"Faraz","GitHub__c":"a-faraz","Email":"anjumfaraz10@gmail.com","Fulcrum_Start_Date__c":"2016-03-26","Fulcrum_End_Date__c":"2016-06-26","Fulcrum_Student_Progress__c":"Module 4 - Recursion in JavaScript","accountId":"0011a00000IAZb0AAH","Id":"003R0000017XHozIAG"},
-  "aakdhe":{"FirstName":"Aakash","LastName":"Dheer","GitHub__c":"aakdhe","Email":"aakashdheer@gmail.com","Fulcrum_Start_Date__c":"2015-11-12","Fulcrum_End_Date__c":"2016-09-12","Fulcrum_Student_Progress__c":"Module 1 - JavaScript Foundations","accountId":"0011a00000IAZb0AAH","Id":"003R0000017XHp9IAG"},
-  "abiymelaku":{"FirstName":"Abiy","LastName":"Melaku","GitHub__c":"abiymelaku","Email":"agirma08@gmail.com","Fulcrum_Start_Date__c":"2016-01-11","Fulcrum_End_Date__c":"2016-10-11","Fulcrum_Student_Progress__c":"Module 6 - Object Oriented Patterns","accountId":"0011a00000IAZb0AAH","Id":"003R0000017XHouIAG"}
+  "aakdhe":{"FirstName":"Aakash","LastName":"Dheer","GitHub__c":"aakdhe","Email":"aakashdheer@gmail.com","Fulcrum_Start_Date__c":"2015-11-12","Fulcrum_End_Date__c":"2016-06-12","Fulcrum_Student_Progress__c":"Module 4 - Recursion in JavaScript","accountId":"0011a00000IAZb0AAH","Id":"003R0000017XHp9IAG"},
+  "abiymelaku":{"FirstName":"Abiy","LastName":"Melaku","GitHub__c":"abiymelaku","Email":"agirma08@gmail.com","Fulcrum_Start_Date__c":"2016-01-11","Fulcrum_End_Date__c":"2016-12-11","Fulcrum_Student_Progress__c":"Sprint - Underbar Part 1","accountId":"0011a00000IAZb0AAH","Id":"003R0000017XHouIAG"}
 };
+// Module 1 - JavaScript Foundations
 
   // AccountId: '001R0000015vicjIAA',
   // RecordTypeId: '0121a0000006J0tAAE',
@@ -138,27 +140,68 @@ var connection = new Connection(sfCred.SALESFORCE_URL, sfCred.SALESFORCE_USER, s
       connection = conn;
       // student = new Student(connection);
       console.log('SalesForce connected');
+      // assuming openFiles is an array of file names and saveFile is a function
+      // to save the modified contents of that file:
 
-      for(var githubId in testStudents) {
-        var contactId =  testStudents[githubId].Id || null;
-        console.log('contactID >>>>>>>>>>>>', contactId);
-        var Fulcrum_End_Date__c = testStudents[githubId].Fulcrum_End_Date__c; 
-        var Fulcrum_Student_Progress__c = testStudents[githubId].Fulcrum_Student_Progress__c;
+//------------------------------------------------------------------------------------
 
-        // Create new student instance
-        var student = new Student(connection, contactId, testStudents[githubId])
-          .then(function(student) {
-            // Do work with student
-            console.log('HELLO STUDENT>>>>>>>>', student);
-            student.update({
-              Fulcrum_End_Date__c: testStudents[githubId].Fulcrum_End_Date__c, 
-              Fulcrum_Student_Progress__c: Fulcrum_Student_Progress__c 
-            })
-            .then(function (response) {
-              console.log('\n\nStudent updated? ', response.success);
-            })
-          })
-      }
+      async.each(testStudents, function(githubId, callback) {
+          var contactId =  githubId.Id || null;
+          console.log('contactID >>>>>>>>>>>>', contactId);
+          var Fulcrum_End_Date__c = githubId.Fulcrum_End_Date__c; 
+          var Fulcrum_Student_Progress__c = githubId.Fulcrum_Student_Progress__c;
+
+          // Perform operation on file here.
+            // Create new student instance
+            var student = new Student(connection, contactId, githubId)
+              .then(function(student) {
+                // Do work with student
+                console.log('HELLO STUDENT>>>>>>>>', student);
+                student.update({
+                  Fulcrum_End_Date__c: githubId.Fulcrum_End_Date__c, 
+                  Fulcrum_Student_Progress__c: Fulcrum_Student_Progress__c 
+                })
+                .then(function (response) {
+                  console.log('\n\nStudent updated? ', response.success);
+                })
+              })
+      }, function(err) {
+          // if any of the file processing produced an error, err would equal that error
+          if( err ) {
+            // One of the iterations produced an error.
+            // All processing will now stop.
+            console.log('A record failed to process');
+          } else {
+            console.log('All files have been processed successfully');
+          }
+      });
+
+
+//------------------------------------------------------------------------------------
+
+
+
+
+      // for(var githubId in testStudents) {
+      //   var contactId =  testStudents[githubId].Id || null;
+      //   console.log('contactID >>>>>>>>>>>>', contactId);
+      //   var Fulcrum_End_Date__c = testStudents[githubId].Fulcrum_End_Date__c; 
+      //   var Fulcrum_Student_Progress__c = testStudents[githubId].Fulcrum_Student_Progress__c;
+
+      //   // Create new student instance
+      //   var student = new Student(connection, contactId, testStudents[githubId])
+      //     .then(function(student) {
+      //       // Do work with student
+      //       console.log('HELLO STUDENT>>>>>>>>', student);
+      //       student.update({
+      //         Fulcrum_End_Date__c: testStudents[githubId].Fulcrum_End_Date__c, 
+      //         Fulcrum_Student_Progress__c: Fulcrum_Student_Progress__c 
+      //       })
+      //       .then(function (response) {
+      //         console.log('\n\nStudent updated? ', response.success);
+      //       })
+      //     })
+      // }
   })
   .error(function(e) {
       console.log('SalesForce login failed');
