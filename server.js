@@ -98,6 +98,31 @@ var studentProperties2 = {
 
 
 
+// var testStudents = {"zklinger2000":{"FirstName":"Zachary","LastName":"Klinger","GitHub__c":"zklinger2000","Email":"zklinger@gmail.com","Fulcrum_Start_Date__c":"2015-12-30","Fulcrum_End_Date__c":"2016-09-30","Fulcrum_Student_Progress__c":"Sprint - Twittler", "Id": '003R0000017XHdHIAW'}};
+
+// var testStudents = {"zklinger2000":{"FirstName":"Zachary","LastName":"Klinger","GitHub__c":"zklinger2000","Email":"zklinger@gmail.com","Fulcrum_Start_Date__c":"2015-12-30","Fulcrum_End_Date__c":"2016-06-30","Fulcrum_Student_Progress__c":"Module 1 - JavaScript Foundations", "Id": '003R0000017XHdHIAW'}};
+
+// var testStudents = {"zklinger2000":{"FirstName":"Zachary","LastName":"Klinger","GitHub__c":"zklinger2000","Email":"zklinger@gmail.com","Fulcrum_Start_Date__c":"2015-12-30","Fulcrum_End_Date__c":"2016-11-30","Fulcrum_Student_Progress__c":"Module 6 - Object Oriented Patterns", "Id": '003R0000017XHdHIAW'}};
+
+// var testStudents = {"zklinger2000":{"FirstName":"Zachary","LastName":"Klinger","GitHub__c":"zklinger2000","Email":"zklinger@gmail.com","Fulcrum_Start_Date__c":"2015-12-30","Fulcrum_End_Date__c":"2016-12-30","Fulcrum_Student_Progress__c":"Module 6 - Object Oriented Patterns", "Id": '003R0000017XHdHIAW'}};
+
+// var testStudents = {
+//   "4lynx":{"FirstName":"Ivan","LastName":"O'Neill","GitHub__c":"4lynx","Email":"ipoguard-github@yahoo.com","Fulcrum_Start_Date__c":"2015-12-16","Fulcrum_End_Date__c":"2016-06-16","Fulcrum_Student_Progress__c":"Module 2 - Developer Workflow"},
+//   "a-faraz":{"FirstName":"Anjum","LastName":"Faraz","GitHub__c":"a-faraz","Email":"anjumfaraz10@gmail.com","Fulcrum_Start_Date__c":"2016-03-26","Fulcrum_End_Date__c":"2016-06-26","Fulcrum_Student_Progress__c":"Module 4 - Recursion in JavaScript"},
+//   "aakdhe":{"FirstName":"Aakash","LastName":"Dheer","GitHub__c":"aakdhe","Email":"aakashdheer@gmail.com","Fulcrum_Start_Date__c":"2015-11-12","Fulcrum_End_Date__c":"2016-05-12","Fulcrum_Student_Progress__c":"Sprint - Underbar Part 1"},
+//   "abiymelaku":{"FirstName":"Abiy","LastName":"Melaku","GitHub__c":"abiymelaku","Email":"agirma08@gmail.com","Fulcrum_Start_Date__c":"2016-01-11","Fulcrum_End_Date__c":"2016-07-11","Fulcrum_Student_Progress__c":"Sprint - Underbar Part 1"}
+// };
+
+var testStudents = {
+  "4lynx":{"FirstName":"Ivan","LastName":"O'Neill","GitHub__c":"4lynx","Email":"ipoguard-github@yahoo.com","Fulcrum_Start_Date__c":"2015-12-16","Fulcrum_End_Date__c":"2016-07-16","Fulcrum_Student_Progress__c":"Sprint - Underbar Part 1","accountId":"0011a00000IAZb0AAH","Id":"003R0000017XHp4IAG"},
+  "a-faraz":{"FirstName":"Anjum","LastName":"Faraz","GitHub__c":"a-faraz","Email":"anjumfaraz10@gmail.com","Fulcrum_Start_Date__c":"2016-03-26","Fulcrum_End_Date__c":"2016-06-26","Fulcrum_Student_Progress__c":"Module 4 - Recursion in JavaScript","accountId":"0011a00000IAZb0AAH","Id":"003R0000017XHozIAG"},
+  "aakdhe":{"FirstName":"Aakash","LastName":"Dheer","GitHub__c":"aakdhe","Email":"aakashdheer@gmail.com","Fulcrum_Start_Date__c":"2015-11-12","Fulcrum_End_Date__c":"2016-09-12","Fulcrum_Student_Progress__c":"Module 1 - JavaScript Foundations","accountId":"0011a00000IAZb0AAH","Id":"003R0000017XHp9IAG"},
+  "abiymelaku":{"FirstName":"Abiy","LastName":"Melaku","GitHub__c":"abiymelaku","Email":"agirma08@gmail.com","Fulcrum_Start_Date__c":"2016-01-11","Fulcrum_End_Date__c":"2016-10-11","Fulcrum_Student_Progress__c":"Module 6 - Object Oriented Patterns","accountId":"0011a00000IAZb0AAH","Id":"003R0000017XHouIAG"}
+};
+
+  // AccountId: '001R0000015vicjIAA',
+  // RecordTypeId: '0121a0000006J0tAAE',
+  // Id: '003R0000017XHdHIAW',
 //  var requiredKeys: [
 //    'FirstName',
 //    'LastName',
@@ -107,18 +132,45 @@ var studentProperties2 = {
 // ];
 
 //Create new connection to salesforce
-connection = new Connection(sfCred.SALESFORCE_URL, sfCred.SALESFORCE_USER, sfCred.SALESFORCE_PASS, sfCred.SALESFORCE_TOKEN)
+
+var connection = new Connection(sfCred.SALESFORCE_URL, sfCred.SALESFORCE_USER, sfCred.SALESFORCE_PASS, sfCred.SALESFORCE_TOKEN)
   .then(function(conn) {
       connection = conn;
-      student = new Student(connection);
+      // student = new Student(connection);
       console.log('SalesForce connected');
 
+      for(var githubId in testStudents) {
+        var contactId =  testStudents[githubId].Id || null;
+        console.log('contactID >>>>>>>>>>>>', contactId);
+        var Fulcrum_End_Date__c = testStudents[githubId].Fulcrum_End_Date__c; 
+        var Fulcrum_Student_Progress__c = testStudents[githubId].Fulcrum_Student_Progress__c;
+
+        // Create new student instance
+        var student = new Student(connection, contactId, testStudents[githubId])
+          .then(function(student) {
+            // Do work with student
+            console.log('HELLO STUDENT>>>>>>>>', student);
+            student.update({
+              Fulcrum_End_Date__c: testStudents[githubId].Fulcrum_End_Date__c, 
+              Fulcrum_Student_Progress__c: Fulcrum_Student_Progress__c 
+            })
+            .then(function (response) {
+              console.log('\n\nStudent updated? ', response.success);
+            })
+          })
+      }
+  })
+  .error(function(e) {
+      console.log('SalesForce login failed');
+      reject(e);
+  }); 
+
       //Create a new student
-      var student = new Student(connection, null, studentProperties2)
-      .then(function(student) {
-        // Do work with student
-        console.log(student);
-      })
+      // var student = new Student(connection, null, studentProperties2)
+      // .then(function(student) {
+      //   // Do work with student
+      //   console.log(student);
+      // })
 
       // student.update({FirstName: 'Joe'})
       // .then(function(response) {
@@ -132,12 +184,12 @@ connection = new Connection(sfCred.SALESFORCE_URL, sfCred.SALESFORCE_USER, sfCre
   // 3. Deploy as a service on Heroku
   // 4. Run script once per day | currently running every few seconds 
   // 5. Connect with salesforce using the inhouse module
+  // 7. Fix parsedData to pull all required keys to save a contact
+  // 8. Create Student Properties for each student  
 
 
 //-------------------------------------------Pending Steps
   // 6. Run a for loop on the parsed data
-  // 7. Fix parsedData to pull all required keys to save a contact
-  // 8. Create Student Properties for each student  
   // 9. Write script to update 
   // 10. 
 
@@ -155,15 +207,7 @@ connection = new Connection(sfCred.SALESFORCE_URL, sfCred.SALESFORCE_USER, sfCre
     //add new record with all the fields
 
 
-
-  })
-  .error(function(e) {
-      console.log('SalesForce login failed');
-      reject(e);
-  }); 
-
-
-
+//--------------------------------------------------------------------------//
 
 // //Create a new student
 // var student = new Student(connection, null, studentProperties)
@@ -193,4 +237,7 @@ connection = new Connection(sfCred.SALESFORCE_URL, sfCred.SALESFORCE_USER, sfCre
 //   console.log('salesforceData>>>>>>>>', salesforceData);
 //   done();
 // });
+
+
+//----------------Dummy Data
 
