@@ -1,3 +1,4 @@
+var moment = require('moment');
 /* 
 Structure of data under the students node that have to be targeted
 <unique Github id>
@@ -48,12 +49,16 @@ function parseJSON(cb) {
       GitHub__c = student.info.github ? student.info.github : "NA";
       Email = student.info.email ?  student.info.email : "NA";
 
-      startDate = student.info.startDate ? student.info.startDate : "NA";
-      endDate = student.info.endDate ? student.info.endDate : "NA";
+      startDate = student.info.startDate ? moment(student.info.startDate).format('YYYY-MM-DD') : "NA";
+      endDate = student.info.endDate ? moment(student.info.endDate).format('YYYY-MM-DD') : "NA";
     }  
 
-    if(student.progress) {
-      progress = student.progress ? student.progress : "NA";      
+    if(student.modules) {
+      var progressNum = student.progress;
+      var len = student.modules.length;
+      var lastModule = student.modules[progressNum];
+      console.log(lastModule);
+      progress = lastModule ? lastModule.name : "NA";      
     }  
 
     if(student.salesforce) {
@@ -68,9 +73,9 @@ function parseJSON(cb) {
       GitHub__c: GitHub__c,
       Email: Email,
 
-      startDate: startDate,
-      endDate: endDate,
-      progress: progress,
+      Fulcrum_Start_Date__c: startDate,
+      Fulcrum_End_Date__c: endDate,
+      Fulcrum_Student_Progress__c: progress,
       accountId: accountId,
       contactId:contactId
     };
