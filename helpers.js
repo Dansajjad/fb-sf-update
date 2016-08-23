@@ -77,7 +77,7 @@ function parseJSON(cb) {
       Fulcrum_End_Date__c: endDate,
       Fulcrum_Student_Progress__c: progress,
       accountId: accountId,
-      contactId:contactId
+      Id: contactId
     };
     
     studentCount++;
