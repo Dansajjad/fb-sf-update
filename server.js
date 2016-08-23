@@ -20,7 +20,7 @@ app.listen(app.get('port'), function() {
 
 
 
-//----------------Connect with (dev environment)
+//----------------Connect with (dev environment)---------------------------
 const http = require('http');
 const request = require("request");
 const fs = require('fs');
@@ -65,54 +65,10 @@ function getDataAndParse() {//Retrieve data from Firebase & parse
 var commonSalesforce = require('common-salesforce');
 var Connection = commonSalesforce.Connection;
 var Student = commonSalesforce.Student;
-// var SFConnect = require('./salesforceConnect');
-// var salesforce = require('./salesforce');
 var Promise = require('bluebird');
 var async = require('async');
 
 var sfCred = require('./config.js')().salesforce;
-// var connection;
-// var student;
-
-var studentProperties = {
-  FirstName: 'Cowboy',
-  LastName: 'Texas',
-  Phone: 8008675309,
-  GitHub__c: 'cowboy123',
-  Email: 'cowboy@gmail.com',
-};
-
-var studentProperties2 = {
-    FirstName: 'Fulcrum',
-    LastName: 'Test',
-    Email: 'fulcrum.mentors@reactorcore.com',
-    GitHub__c: 'fulcrumtest',
-};
-
-var studentProperties2 = {
-    FirstName: 'Fulcrum',
-    LastName: 'Test',
-    Email: 'fulcrum.mentors@reactorcore.com',
-    GitHub__c: 'fulcrumtest',
-    AccountId: 456
-};
-
-
-
-// var testStudents = {"zklinger2000":{"FirstName":"Zachary","LastName":"Klinger","GitHub__c":"zklinger2000","Email":"zklinger@gmail.com","Fulcrum_Start_Date__c":"2015-12-30","Fulcrum_End_Date__c":"2016-09-30","Fulcrum_Student_Progress__c":"Sprint - Twittler", "Id": '003R0000017XHdHIAW'}};
-
-// var testStudents = {"zklinger2000":{"FirstName":"Zachary","LastName":"Klinger","GitHub__c":"zklinger2000","Email":"zklinger@gmail.com","Fulcrum_Start_Date__c":"2015-12-30","Fulcrum_End_Date__c":"2016-06-30","Fulcrum_Student_Progress__c":"Module 1 - JavaScript Foundations", "Id": '003R0000017XHdHIAW'}};
-
-// var testStudents = {"zklinger2000":{"FirstName":"Zachary","LastName":"Klinger","GitHub__c":"zklinger2000","Email":"zklinger@gmail.com","Fulcrum_Start_Date__c":"2015-12-30","Fulcrum_End_Date__c":"2016-11-30","Fulcrum_Student_Progress__c":"Module 6 - Object Oriented Patterns", "Id": '003R0000017XHdHIAW'}};
-
-// var testStudents = {"zklinger2000":{"FirstName":"Zachary","LastName":"Klinger","GitHub__c":"zklinger2000","Email":"zklinger@gmail.com","Fulcrum_Start_Date__c":"2015-12-30","Fulcrum_End_Date__c":"2016-12-30","Fulcrum_Student_Progress__c":"Module 6 - Object Oriented Patterns", "Id": '003R0000017XHdHIAW'}};
-
-// var testStudents = {
-//   "4lynx":{"FirstName":"Ivan","LastName":"O'Neill","GitHub__c":"4lynx","Email":"ipoguard-github@yahoo.com","Fulcrum_Start_Date__c":"2015-12-16","Fulcrum_End_Date__c":"2016-06-16","Fulcrum_Student_Progress__c":"Module 2 - Developer Workflow"},
-//   "a-faraz":{"FirstName":"Anjum","LastName":"Faraz","GitHub__c":"a-faraz","Email":"anjumfaraz10@gmail.com","Fulcrum_Start_Date__c":"2016-03-26","Fulcrum_End_Date__c":"2016-06-26","Fulcrum_Student_Progress__c":"Module 4 - Recursion in JavaScript"},
-//   "aakdhe":{"FirstName":"Aakash","LastName":"Dheer","GitHub__c":"aakdhe","Email":"aakashdheer@gmail.com","Fulcrum_Start_Date__c":"2015-11-12","Fulcrum_End_Date__c":"2016-05-12","Fulcrum_Student_Progress__c":"Sprint - Underbar Part 1"},
-//   "abiymelaku":{"FirstName":"Abiy","LastName":"Melaku","GitHub__c":"abiymelaku","Email":"agirma08@gmail.com","Fulcrum_Start_Date__c":"2016-01-11","Fulcrum_End_Date__c":"2016-07-11","Fulcrum_Student_Progress__c":"Sprint - Underbar Part 1"}
-// };
 
 var testStudents = {
   "4lynx":{"FirstName":"Ivan","LastName":"O'Neill","GitHub__c":"4lynx","Email":"ipoguard-github@yahoo.com","Fulcrum_Start_Date__c":"2015-12-16","Fulcrum_End_Date__c":"2016-03-16","Fulcrum_Student_Progress__c":"Module 6 - Object Oriented Patterns","accountId":"0011a00000IAZb0AAH","Id":"003R0000017XHp4IAG"},
@@ -120,106 +76,48 @@ var testStudents = {
   "aakdhe":{"FirstName":"Aakash","LastName":"Dheer","GitHub__c":"aakdhe","Email":"aakashdheer@gmail.com","Fulcrum_Start_Date__c":"2015-11-12","Fulcrum_End_Date__c":"2016-06-12","Fulcrum_Student_Progress__c":"Module 4 - Recursion in JavaScript","accountId":"0011a00000IAZb0AAH","Id":"003R0000017XHp9IAG"},
   "abiymelaku":{"FirstName":"Abiy","LastName":"Melaku","GitHub__c":"abiymelaku","Email":"agirma08@gmail.com","Fulcrum_Start_Date__c":"2016-01-11","Fulcrum_End_Date__c":"2016-12-11","Fulcrum_Student_Progress__c":"Sprint - Underbar Part 1","accountId":"0011a00000IAZb0AAH","Id":"003R0000017XHouIAG"}
 };
-// Module 1 - JavaScript Foundations
-
-  // AccountId: '001R0000015vicjIAA',
-  // RecordTypeId: '0121a0000006J0tAAE',
-  // Id: '003R0000017XHdHIAW',
-//  var requiredKeys: [
-//    'FirstName',
-//    'LastName',
-//    'GitHub__c',
-//    'Email',
-//    'Earliest_Start_Date__c'
-// ];
 
 //Create new connection to salesforce
-
 var connection = new Connection(sfCred.SALESFORCE_URL, sfCred.SALESFORCE_USER, sfCred.SALESFORCE_PASS, sfCred.SALESFORCE_TOKEN)
   .then(function(conn) {
-      connection = conn;
-      // student = new Student(connection);
-      console.log('SalesForce connected');
-      // assuming openFiles is an array of file names and saveFile is a function
-      // to save the modified contents of that file:
+    connection = conn;
+    console.log('SalesForce connected');
 
-//------------------------------------------------------------------------------------
+    //loop over students, check existance in salesforce, update 
+    async.each(testStudents, function(githubId, callback) {
+      var contactId =  githubId.Id || null;
+      console.log('contactID >>>>>>>>>>>>', contactId);
+      var Fulcrum_End_Date__c = githubId.Fulcrum_End_Date__c; 
+      var Fulcrum_Student_Progress__c = githubId.Fulcrum_Student_Progress__c;
 
-      async.each(testStudents, function(githubId, callback) {
-          var contactId =  githubId.Id || null;
-          console.log('contactID >>>>>>>>>>>>', contactId);
-          var Fulcrum_End_Date__c = githubId.Fulcrum_End_Date__c; 
-          var Fulcrum_Student_Progress__c = githubId.Fulcrum_Student_Progress__c;
-
-          // Perform operation on file here.
-            // Create new student instance
-            var student = new Student(connection, contactId, githubId)
-              .then(function(student) {
-                // Do work with student
-                console.log('HELLO STUDENT>>>>>>>>', student);
-                student.update({
-                  Fulcrum_End_Date__c: githubId.Fulcrum_End_Date__c, 
-                  Fulcrum_Student_Progress__c: Fulcrum_Student_Progress__c 
-                })
-                .then(function (response) {
-                  console.log('\n\nStudent updated? ', response.success);
-                })
-              })
-      }, function(err) {
-          // if any of the file processing produced an error, err would equal that error
-          if( err ) {
-            // One of the iterations produced an error.
-            // All processing will now stop.
-            console.log('A record failed to process');
-          } else {
-            console.log('All files have been processed successfully');
-          }
-      });
-
-
-//------------------------------------------------------------------------------------
-
-
-
-
-      // for(var githubId in testStudents) {
-      //   var contactId =  testStudents[githubId].Id || null;
-      //   console.log('contactID >>>>>>>>>>>>', contactId);
-      //   var Fulcrum_End_Date__c = testStudents[githubId].Fulcrum_End_Date__c; 
-      //   var Fulcrum_Student_Progress__c = testStudents[githubId].Fulcrum_Student_Progress__c;
-
-      //   // Create new student instance
-      //   var student = new Student(connection, contactId, testStudents[githubId])
-      //     .then(function(student) {
-      //       // Do work with student
-      //       console.log('HELLO STUDENT>>>>>>>>', student);
-      //       student.update({
-      //         Fulcrum_End_Date__c: testStudents[githubId].Fulcrum_End_Date__c, 
-      //         Fulcrum_Student_Progress__c: Fulcrum_Student_Progress__c 
-      //       })
-      //       .then(function (response) {
-      //         console.log('\n\nStudent updated? ', response.success);
-      //       })
-      //     })
-      // }
+      // Perform operation on students here
+      // Create new student instance
+      var student = new Student(connection, contactId, githubId)
+        .then(function(student) {
+          // Do work with student
+          console.log('HELLO STUDENT>>>>>>>>', student);
+          student.update({
+            Fulcrum_End_Date__c: githubId.Fulcrum_End_Date__c, 
+            Fulcrum_Student_Progress__c: Fulcrum_Student_Progress__c 
+          })
+          .then(function (response) {
+            console.log('\n\nStudent updated? ', response.success);
+          })
+        })
+    }, function(err) {
+        if( err ) {
+          // If one of the iterations produced an error all processing will stop
+          console.log('A record failed to process');
+        } else {
+          console.log('All records have been processed successfully');
+        }
+    });
   })
   .error(function(e) {
       console.log('SalesForce login failed');
       reject(e);
   }); 
 
-      //Create a new student
-      // var student = new Student(connection, null, studentProperties2)
-      // .then(function(student) {
-      //   // Do work with student
-      //   console.log(student);
-      // })
-
-      // student.update({FirstName: 'Joe'})
-      // .then(function(response) {
-      //   console.log(res.success); // true or false
-      //   // Response will also include the student properties
-      // });
 
 //------------------------------------------Completed Steps
   // 1. Download Firebase data
@@ -227,60 +125,23 @@ var connection = new Connection(sfCred.SALESFORCE_URL, sfCred.SALESFORCE_USER, s
   // 3. Deploy as a service on Heroku
   // 4. Run script once per day | currently running every few seconds 
   // 5. Connect with salesforce using the inhouse module
+  // 6. Run a for loop on the parsed data
   // 7. Fix parsedData to pull all required keys to save a contact
-  // 8. Create Student Properties for each student  
+  // 8. Match parsedData keys to be same as fields in salesforce
+  // 9. Create Student Properties for each student  
+  // 10. Write script to update 
 
 
 //-------------------------------------------Pending Steps
-  // 6. Run a for loop on the parsed data
-  // 9. Write script to update 
-  // 10. 
+  // 11. Replace dummy data with real data
+  // 12. Set environment to "Production"
+  // 13. Clean up and if necessary modularize code
 
+
+//------------------------------------------Salesforce flow
  // check if student exists
   // if student exists
-    //check if Fulcrum End Date exits in SalesForce
-    //if exists 
-      //do nothing
-    // else 
-      // if endDate === "NA" 
-        // endDate = startDate + 3 months
       // update End Date
-    //Update Fulcrum Student Progress
+      //Update Fulcrum Student Progress
   // else 
     //add new record with all the fields
-
-
-//--------------------------------------------------------------------------//
-
-// //Create a new student
-// var student = new Student(connection, null, studentProperties)
-// .then(function(student) {
-//   // Do work with student
-//   console.log(student);
-// })
-
-// student.update({FirstName: 'Joe'})
-// .then(function(response) {
-//   console.log(res.success); // true or false
-//   // Response will also include the student properties
-// });
-
-
-
-//--------------------------------------
-
-// var Student = SFConnect.getStudent();
-// console.log('STUDENT <<<<<<<<<<<<<<', Student);
- 
-
-// var validString = "Your typeform Fulcrum Checkout has a new response:  First name Fulcrum  Last name Test  Email fulcrum.mentors@reactorcore.com  Github fulcrumtest  DISCOUNT  I agree to the Terms and Conditions Yes  promotion   utm_campaign   utm_content   utm_medium   utm_source   utm_term     === FIRST:Fulcrum/FIRST LAST:Test/LAST EMAIL:fulcrum.mentors@reactorcore.com/EMAIL GITHUB:fulcrumtest/GITHUB PHONE:5555555555/PHONE ===";
-
-// salesforce.addStudent(validString)
-// .then(function(salesforceData) {
-//   console.log('salesforceData>>>>>>>>', salesforceData);
-//   done();
-// });
-
-
-//----------------Dummy Data
-
