@@ -21,18 +21,33 @@ function parseJSON(cb) {
   let parsedData = {}; //this holds the selected key/value pairs
   let studentCount = 0; //keeps count of students parsed
 
+  let studentsWithMissingData = {
+
+  }
+
   for(var githubID in students) {//loop over all the raw student objects
     const student = students[githubID];
 
     let 
+      FirstName = "NA";
+      LastName = "NA";
+      GitHub__c = "NA";
+      Email = "NA";
+
       startDate = "NA",
       endDate = "NA",
       progress = "NA",
       accountId = "NA",
       contactId = "NA";
+      
+    if(!student.info) {studentsWithMissingData[student] === true};
 
-   
     if(student.info) {
+      FirstName =  student.info.first ?  student.info.first : "NA";
+      LastName = student.info.last ? student.info.last : "NA";
+      GitHub__c = student.info.github ? student.info.github : "NA";
+      Email = student.info.email ?  student.info.email : "NA";
+
       startDate = student.info.startDate ? student.info.startDate : "NA";
       endDate = student.info.endDate ? student.info.endDate : "NA";
     }  
@@ -46,8 +61,13 @@ function parseJSON(cb) {
       contactId = student.salesforce.contactId ? student.salesforce.contactId : "NA";      
     }
 
-    
+    console.log('STUDENT>>>>>>>>>', student);
     parsedData[githubID] = {// add new student object to parsedData
+      FirstName: FirstName,
+      LastName:  LastName,
+      GitHub__c: GitHub__c,
+      Email: Email,
+
       startDate: startDate,
       endDate: endDate,
       progress: progress,
@@ -59,6 +79,8 @@ function parseJSON(cb) {
   }//for-loop
 
   console.log(parsedData);
+  console.log('Students missing data: ', studentsWithMissingData);
+
 
   console.log(`\n\nParse process is complete for ${studentCount} of students.\nFields retrieved: startDate, endDate, progress, accountId, contactId.`
   );
