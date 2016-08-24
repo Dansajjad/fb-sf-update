@@ -22,10 +22,6 @@ function parseJSON(cb) {
   let parsedData = {}; //this holds the selected key/value pairs
   let studentCount = 0; //keeps count of students parsed
 
-  let studentsWithMissingData = {
-
-  }
-
   for(var githubID in students) {//loop over all the raw student objects
     const student = students[githubID];
 
