@@ -22,6 +22,10 @@ function parseJSON(cb) {
   let parsedData = {}; //this holds the selected key/value pairs
   let studentCount = 0; //keeps count of students parsed
 
+  let currentDate = moment().format('YYYY-MM-DD'); 
+  console.log('Current date is ', currentDate);
+
+
   for(var githubID in students) {//loop over all the raw student objects
     const student = students[githubID];
 
@@ -36,8 +40,6 @@ function parseJSON(cb) {
       progress = "NA",
       accountId = "NA",
       contactId = "NA";
-      
-    if(!student.info) {studentsWithMissingData[student] === true};
 
     if(student.info) {
       FirstName =  student.info.first ?  student.info.first : "NA";
@@ -63,7 +65,7 @@ function parseJSON(cb) {
     }
 
     console.log('STUDENT>>>>>>>>>', student);
-    parsedData[githubID] = {// add new student object to parsedData
+    parsedData[githubID] = {// add new student object to parsedData, keys should match salesforce fields
       FirstName: FirstName,
       LastName:  LastName,
       GitHub__c: GitHub__c,
@@ -77,10 +79,9 @@ function parseJSON(cb) {
     };
     
     studentCount++;
-  }//for-loop
+  }//for-in loop
 
   console.log(parsedData);
-  console.log('Students missing data: ', studentsWithMissingData);
 
 
   console.log(`\n\nParse process is complete for ${studentCount} of students.\nFields retrieved: startDate, endDate, progress, accountId, contactId.`
