@@ -73,8 +73,8 @@ var sfCred = require('./config.js')().salesforce;
 var testStudents = {
   "4lynx":{"FirstName":"Ivan","LastName":"O'Neill","GitHub__c":"4lynx","Email":"ipoguard-github@yahoo.com","Fulcrum_Start_Date__c":"2015-12-16","Fulcrum_End_Date__c":"2016-03-16","Fulcrum_Student_Progress__c":"Module 6 - Object Oriented Patterns","accountId":"0011a00000IAZb0AAH","Id":"003R0000017XHp4IAG"},
   "a-faraz":{"FirstName":"Anjum","LastName":"Faraz","GitHub__c":"a-faraz","Email":"anjumfaraz10@gmail.com","Fulcrum_Start_Date__c":"2016-03-26","Fulcrum_End_Date__c":"2016-06-26","Fulcrum_Student_Progress__c":"Module 4 - Recursion in JavaScript","accountId":"0011a00000IAZb0AAH","Id":"003R0000017XHozIAG"},
-  "aakdhe":{"FirstName":"Aakash","LastName":"Dheer","GitHub__c":"aakdhe","Email":"aakashdheer@gmail.com","Fulcrum_Start_Date__c":"2015-11-12","Fulcrum_End_Date__c":"2016-06-12","Fulcrum_Student_Progress__c":"Module 4 - Recursion in JavaScript","accountId":"0011a00000IAZb0AAH","Id":"003R0000017XHp9IAG"},
-  "abiymelaku":{"FirstName":"Abiy","LastName":"Melaku","GitHub__c":"abiymelaku","Email":"agirma08@gmail.com","Fulcrum_Start_Date__c":"2016-01-11","Fulcrum_End_Date__c":"2016-12-11","Fulcrum_Student_Progress__c":"Sprint - Underbar Part 1","accountId":"0011a00000IAZb0AAH","Id":"003R0000017XHouIAG"}
+  "aakdhe":{"FirstName":"Aakash","LastName":"Dheer","GitHub__c":"aakdhe","Email":"aakashdheer@gmail.com","Fulcrum_Start_Date__c":"2015-11-12","Fulcrum_End_Date__c":"2016-06-12","Fulcrum_Student_Progress__c":"Sprint - Underbar Part 1","accountId":"0011a00000IAZb0AAH","Id":"003R0000017XHp9IAG"},
+  "abiymelaku":{"FirstName":"Abiy","LastName":"Melaku","GitHub__c":"abiymelaku","Email":"agirma08@gmail.com","Fulcrum_Start_Date__c":"2016-01-11","Fulcrum_End_Date__c":"2016-11-15","Fulcrum_Student_Progress__c":"Sprint - Underbar Part 2","accountId":"0011a00000IAZb0AAH","Id":"003R0000017XHouIAG"}
 };
 
 //Create new connection to salesforce
@@ -87,19 +87,23 @@ var connection = new Connection(sfCred.SALESFORCE_URL, sfCred.SALESFORCE_USER, s
     async.each(testStudents, function(githubId, callback) {
       var contactId =  githubId.Id || null;
       console.log('contactID >>>>>>>>>>>>', contactId);
-      var Fulcrum_End_Date__c = githubId.Fulcrum_End_Date__c; 
-      var Fulcrum_Student_Progress__c = githubId.Fulcrum_Student_Progress__c;
 
+      var fieldsToUpdate = {};
+
+      if (githubId.Fulcrum_End_Date__c === "NA") { //if date is missing only update the progress
+        fieldsToUpdate.Fulcrum_Student_Progress__c = githubId.Fulcrum_Student_Progress__c;
+      } else {
+        fieldsToUpdate.Fulcrum_End_Date__c = githubId.Fulcrum_End_Date__c; 
+        fieldsToUpdate.Fulcrum_Student_Progress__c = githubId.Fulcrum_Student_Progress__c;
+      }
+      
       // Perform operation on students here
       // Create new student instance
       var student = new Student(connection, contactId, githubId)
         .then(function(student) {
           // Do work with student
           console.log('HELLO STUDENT>>>>>>>>', student);
-          student.update({
-            Fulcrum_End_Date__c: githubId.Fulcrum_End_Date__c, 
-            Fulcrum_Student_Progress__c: Fulcrum_Student_Progress__c 
-          })
+          student.update(fieldsToUpdate)
           .then(function (response) {
             console.log('\n\nStudent updated? ', response.success);
           })
@@ -136,6 +140,10 @@ var connection = new Connection(sfCred.SALESFORCE_URL, sfCred.SALESFORCE_USER, s
   // 11. Replace dummy data with real data
   // 12. Set environment to "Production"
   // 13. Clean up and if necessary modularize code
+  // 14. Free hreoku app goes to sleep, wake app by pinging or twice per day
+  // 15. Figure out the account name for fulcrum students in salesforce 
+  // 16. Figure out if/and what to filter by all the students from firebase
+  // 17. 
 
 
 //------------------------------------------Salesforce flow
