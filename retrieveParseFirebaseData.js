@@ -3,8 +3,8 @@ const http = require('http');
 const request = require("request");
 const fs = require('fs');
 const parseJSON = require('./helpers.js');
-// const testStudents = require('./testStudents'); //dummy students
-const testStudents = require('.studentsParsed');
+const testStudents = require('./testStudents'); //dummy students
+// const testStudents = require('.studentsParsed'); uncomment for production
 const token = require('./firebaseToken');
 
 let baseUrl;
