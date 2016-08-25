@@ -1,5 +1,9 @@
 var express = require('express');
 var app = express();
+//------------------------------------------------
+var getDataAndParse = require('./retrieveParseFirebaseData');
+var updateSalesforce = require('./updateSalesforce');
+//------------------------------------------------
 
 app.set('port', (process.env.PORT || 3000));
 
@@ -10,17 +14,20 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
 app.get('/', function(request, response) {
+  console.log(`Receiving a get reqeuest for the route: ${request.path}`);
   response.render('pages/index');
 });
 
+app.get('/update', function(request, response) {
+  console.log(`Receiving a get reqeuest for the route: ${request.path}`);
+  getDataAndParse(updateSalesforce); //retrieve data from FB, parse data, update SF
+  response.end('<h1>Your request to update has been submitted</h1>');  
+})
+
 app.listen(app.get('port'), function() {
-  console.log('Node app is running on port', app.get('port'));
+  console.log(`Node app is running on port', ${app.get('port')} in ${process.env.NODE_ENV} mode`);
 });
 
-var getDataAndParse = require('./retrieveParseFirebaseData');
-var updateSalesforce = require('./updateSalesforce');
-
-getDataAndParse(updateSalesforce);
 
 // (function () { //IIFE that keeps pulling data from FB, parses, and saves every 5s
 //   let calledTimes = 0;
