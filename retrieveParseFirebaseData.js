@@ -3,19 +3,20 @@ const http = require('http');
 const request = require("request");
 const fs = require('fs');
 const parseJSON = require('./helpers.js');
-var testStudents = require('./testStudents'); //dummy students
-
+const testStudents = require('./testStudents'); //dummy students
+const token = require('./firebaseToken');
 
 let baseUrl;
 
-if(process.env.NODE_ENV !== 'PROD') {
+if(process.env.NODE_ENV !== 'production') {
   const config = require('./config.js')();
-  baseUrl = config.firebase.url; 
+  baseUrl = config.firebase.FIREBASE_URL; 
 } else {
   baseUrl = process.env.FIREBASE_URL;
 }
 
-const url = baseUrl + 'students/.json'
+const url = baseUrl + 'students/.json' + "?auth=" + token
+console.log(`>>>> Node Env: ${process.env.NODE_ENV} \nurl : ${url}`);
 
 function getDataAndParse(cb) {//Retrieve data from Firebase & parse
   var stream = request(url).pipe(fs.createWriteStream('./studentsRaw.json'));
@@ -24,7 +25,7 @@ function getDataAndParse(cb) {//Retrieve data from Firebase & parse
       fs.writeFile('./studentsParsed.json', data, function(err) {
         if(err) console.log(err);
         else {
-          console.log('\nWrite complete. Updating Salesforce next!')
+          console.log('\nWrite to file "studentsParsed.json" complete. \nUpdating Salesforce next!\n')
           cb(testStudents); //do something to the parsed file/data
         }
       });
