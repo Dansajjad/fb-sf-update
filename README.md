@@ -1,39 +1,36 @@
-# node-js-getting-started
+# Getting-started
 
-A barebones Node.js app using [Express 4](http://expressjs.com/).
+Fulcrum app to connect with Firebase and update Salesforce fields.
+App updates Fulcrum end date and Fulcrum progress. 
 
-This application supports the [Getting Started with Node on Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs) article - check it out.
+To update visit link (http://localhost:3000/update). 
 
 ## Running Locally
 
-Make sure you have [Node.js](http://nodejs.org/) and the [Heroku Toolbelt](https://toolbelt.heroku.com/) installed.
+
 
 ```sh
-$ git clone git@github.com:heroku/node-js-getting-started.git # or clone your own fork
-$ cd node-js-getting-started
+$ git clone the repo # or clone your own fork
+$ cd into the cloned directory
 $ npm install
 $ npm start
 ```
 
-Your app should now be running on [localhost:5000](http://localhost:5000/).
+Before your app 
+You will need to create a config file named `config.js` in the root directory to provide environment variables for development/testing. 
 
-## Deploying to Heroku
+You will also need to create a file named `testStudents.json` in the root directory to test the application. 
+
+```sh 
+$ npm start
+```
+
+
+Your app should now be running on [localhost:3000](http://localhost:3000/).
+
+## Updating Salesforce
 
 ```
-$ heroku create
-$ git push heroku master
-$ heroku open
+To update visit link (http://localhost:3000/update)
+
 ```
-or
-
-[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
-
-## Documentation
-
-For more information about using Node.js on Heroku, see these Dev Center articles:
-
-- [Getting Started with Node.js on Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs)
-- [Heroku Node.js Support](https://devcenter.heroku.com/articles/nodejs-support)
-- [Node.js on Heroku](https://devcenter.heroku.com/categories/nodejs)
-- [Best Practices for Node.js Development](https://devcenter.heroku.com/articles/node-best-practices)
-- [Using WebSockets on Heroku with Node.js](https://devcenter.heroku.com/articles/node-websockets)
