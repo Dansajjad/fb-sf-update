@@ -4,11 +4,30 @@ var Student = commonSalesforce.Student;
 var Promise = require('bluebird');
 var async = require('async');
 
-var sfCred = require('./config.js')().salesforce; //credentials
+let 
+  sfUrl,
+  sfUser,
+  sfPass,
+  sfToken;
+
+if(process.env.NODE_ENV !== 'production') {
+  const sfCred = require('./config.js')().salesforce;  //credentials
+  console.log('>>>>>>>>>>>>>', sfCred);
+  sfUrl = sfCred.SALESFORCE_URL;
+  sfUser = sfCred.SALESFORCE_USER;
+  sfPass = sfCred.SALESFORCE_PASS;
+  sfToken = sfCred.SALESFORCE_TOKEN;
+} else {
+  sfUrl = process.env.SALESFORCE_URL;
+  sfUser = process.env.SALESFORCE_USER;
+  sfPass = process.env.SALESFORCE_PASS;
+  sfToken = process.env.SALESFORCE_TOKEN;;
+}
+
 
 //Create new connection to salesforce
 function updateSalesforce(data) {
-  var connection = new Connection(sfCred.SALESFORCE_URL, sfCred.SALESFORCE_USER, sfCred.SALESFORCE_PASS, sfCred.SALESFORCE_TOKEN)
+  var connection = new Connection(sfUrl, sfUser, sfPass, sfToken)
     .then(function(conn) {
       connection = conn;
       console.log('SalesForce connected');
@@ -16,7 +35,7 @@ function updateSalesforce(data) {
       //loop over students, check existance in salesforce, update 
       async.each(data, function(githubId, callback) {
         var contactId =  githubId.Id || null;
-        console.log('contactID >>>>>>>>>>>>', contactId);
+        console.log(`Student:  ${githubId.FirstName} ${githubId.LastName}`);
 
         var fieldsToUpdate = {};
 
@@ -32,10 +51,10 @@ function updateSalesforce(data) {
         var student = new Student(connection, contactId, githubId)
           .then(function(student) {
             // Do work with student
-            console.log('HELLO STUDENT>>>>>>>>', student);
+            // console.log('HELLO STUDENT>>>>>>>>', student);
             student.update(fieldsToUpdate)
             .then(function (response) {
-              console.log('\n\nStudent updated? ', response.success);
+              console.log(`\n\n${student.FirstName} ${student.LastName} updated? ${response.success}`);
             })
           })
       }, function(err) {
