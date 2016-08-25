@@ -12,7 +12,7 @@ let
 
 if(process.env.NODE_ENV !== 'production') {
   const sfCred = require('./config.js')().salesforce;  //credentials
-  console.log('>>>>>>>>>>>>>', sfCred);
+
   sfUrl = sfCred.SALESFORCE_URL;
   sfUser = sfCred.SALESFORCE_USER;
   sfPass = sfCred.SALESFORCE_PASS;
@@ -37,7 +37,7 @@ function updateSalesforce(data) {
         var contactId =  githubId.Id || null;
         console.log(`Student:  ${githubId.FirstName} ${githubId.LastName}`);
 
-        var fieldsToUpdate = {};
+        var fieldsToUpdate = {}; //this will hold the updates to be made in salesforce
 
         if (githubId.Fulcrum_End_Date__c === "NA") { //if date is missing only update the progress
           fieldsToUpdate.Fulcrum_Student_Progress__c = githubId.Fulcrum_Student_Progress__c;
@@ -51,7 +51,6 @@ function updateSalesforce(data) {
         var student = new Student(connection, contactId, githubId)
           .then(function(student) {
             // Do work with student
-            // console.log('HELLO STUDENT>>>>>>>>', student);
             student.update(fieldsToUpdate)
             .then(function (response) {
               console.log(`\n\n${student.FirstName} ${student.LastName} updated? ${response.success}`);
@@ -73,3 +72,12 @@ function updateSalesforce(data) {
 }
 
 module.exports = updateSalesforce;
+
+//----------------------------------------------------------------------NOTES
+/*
+  This module: 
+  - creates a connection with salesforces depending on the dev/production environment
+  - takes each student from the parsed students file (studentsParsed.json)
+    - checks if student's ID matches someone in salesforce
+    - if so updates that student's fulcrum end date and the students progress
+*/
