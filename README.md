@@ -3,7 +3,6 @@
 Fulcrum app to connect with Firebase and update Salesforce fields.
 App updates Fulcrum end date and Fulcrum progress. 
 
-To update visit link (http://localhost:3000/update). 
 
 ## Running Locally
 
@@ -25,10 +24,7 @@ $ npm start
 
 Your app should now be running on [localhost:3000](http://localhost:3000/).
 
-## Updating Salesforce
+## Initiating Salesforce Update
 Visiting the link below will start the update process. You can keep track of the progress in your console. 
 
-```
 To update visit link [update](http://localhost:3000/update)
-
-```
