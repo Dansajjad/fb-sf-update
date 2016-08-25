@@ -1,17 +1,17 @@
 const Firebase = require('firebase');
 const FirebaseTokenGenerator = require('firebase-token-generator');
-const  config = require('./config.js')();
 
 let firebaseUrl;
 let firebaseSecret;
 
-// if(process.env.NODE_ENV !== 'production') {
+if(process.env.NODE_ENV !== 'production') {
+  const config = require('./config.js')();
   firebaseUrl = config.firebase.FIREBASE_URL;
   firebaseSecret = config.firebase.FIREBASE_SECRET;
-// } else {
-//   firebaseUrl = process.env.FIREBASE_URL;
-//   firebaseSecret = process.env.FIREBASE_SECRET;  
-// }
+} else {
+  firebaseUrl = process.env.FIREBASE_URL;
+  firebaseSecret = process.env.FIREBASE_SECRET;  
+}
 
 
 
