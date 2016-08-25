@@ -7,16 +7,13 @@ To update visit link (http://localhost:3000/update).
 
 ## Running Locally
 
-
-
 ```sh
 $ git clone the repo # or clone your own fork
 $ cd into the cloned directory
 $ npm install
-$ npm start
 ```
 
-Before your app 
+Before you can start your app: 
 You will need to create a config file named `config.js` in the root directory to provide environment variables for development/testing. 
 
 You will also need to create a file named `testStudents.json` in the root directory to test the application. 
@@ -29,8 +26,9 @@ $ npm start
 Your app should now be running on [localhost:3000](http://localhost:3000/).
 
 ## Updating Salesforce
+Visiting the link below will start the update process. You can keep track of the progress in your console. 
 
 ```
-To update visit link (http://localhost:3000/update)
+To update visit link [update](http://localhost:3000/update)
 
 ```
