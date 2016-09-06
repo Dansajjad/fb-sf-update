@@ -19,3 +19,9 @@ notes.txt
 config.js
 .env
 miscJunk
+
+# Test data sets
+parsedDataset1.json
+rawDataset1.json
+rawDataset2.json
+rawDataset3.json
