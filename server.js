@@ -38,8 +38,10 @@ app.get('/update', function(request, response) {//hitting this route sets everyt
   getData(url)
   .then(parseJSON)
   .then(console.log)
-  .catch() 
-  // .then(updateSalesforce)
+  // .then(updateSalesforce)  //uncomment for production
+  .catch(function (e) {
+    console.log(e);
+  }) 
 
   response.end('<h1>Your request to update has been submitted</h1>');  
 })
