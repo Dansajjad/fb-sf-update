@@ -7,6 +7,7 @@
   },
   "main": "server.js",
   "scripts": {
+    "test": "mocha test/tests1.js && mocha test/tests2.js",
     "start": "node server.js"
   },
   "dependencies": {
