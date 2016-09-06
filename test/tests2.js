@@ -59,12 +59,16 @@ describe('Updating a student\'s end date and progress', function() {
     new Student(conn, contactId)
       .then(function(student) {
         expect(student.Id.length).to.be.gt(0);
-        console.log('before update'.underline.red, student['Fulcrum_End_Date__c']);
         _student = student;
         done();
       });
   });
 
+/*
+  Manually modify a given student record so that we can 
+  compare with a later update when updateSalesforce is called
+*/
+  
   describe('change values to be updated later', function() {
     it('should update a student', function(done) {
       this.timeout(timeout);
@@ -77,7 +81,25 @@ describe('Updating a student\'s end date and progress', function() {
           done()
         });
     });
+
+    it('should have modified end date and progress', function(done) {
+      contactId = "003R0000017XHozIAG";
+      this.timeout(timeout);
+      new Student(conn, contactId)
+        .then(function(student) {
+          expect(student['Fulcrum_End_Date__c']).to.equal("2016-05-12");
+          expect(student["Fulcrum_Student_Progress__c"]).to.equal("Sprint - Twittler");          
+          console.log('End date & progress before update'.underline.red, student['Fulcrum_End_Date__c'], '|', student['Fulcrum_Student_Progress__c']);
+          _student = student;
+          done();
+        });
+    });
   });
+
+/*
+  Update records using updateSalesforce. Expect the previous record to update with new data.
+*/
+ 
 
   describe('update salesforce record by calling updateSalesforce', function() {
     before(function(done) {
@@ -100,6 +122,8 @@ describe('Updating a student\'s end date and progress', function() {
           // console.log('<<<<<<<<<<'.red, student);
           expect(student['Fulcrum_End_Date__c']).to.equal("2016-06-26");
           expect(student["Fulcrum_Student_Progress__c"]).to.equal("Module 4 - Recursion in JavaScript");
+          console.log('End date & progress after update'.underline.red, student['Fulcrum_End_Date__c'], '|', student['Fulcrum_Student_Progress__c']);
+          _student = student;          
           done();
         })
     });
