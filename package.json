@@ -12,14 +12,20 @@
   "dependencies": {
     "async": "^2.0.1",
     "bluebird": "^3.4.1",
+    "chai": "^3.5.0",
+    "chai-fs": "^0.1.0",
+    "colors": "^1.1.2",
     "common-salesforce": "https://1b245d2ed902a404d62f2427798047a577f50d03:x-oauth-basic@github.com/reactorcore/utils.common-salesforce",
     "ejs": "2.4.1",
     "express": "4.13.3",
     "firebase": "2.3.2",
     "firebase-token-generator": "^2.0.0",
+    "mocha": "^3.0.2",
     "moment": "^2.14.1",
+    "nock": "^8.0.0",
     "q": "^1.4.1",
     "request": "^2.74.0",
+    "supertest": "^2.0.0",
     "underscore": "^1.8.3"
   },
   "repository": {
